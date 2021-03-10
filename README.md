@@ -37,7 +37,7 @@ Sanal ortamınızı etkinleştirdikten sonra, ortamın adı cmd yol belirleyicin
 ## TensorFlow kurulumu
 TensorFlow kurulumu, 3 basit adımda yapılabilir.
 #### TensorFlow PIP ile yükleyin
-cmd de alttaki kodu çalıştırın. 
+Anaconda Promp tensorflow sanal ortamında de alttaki kodu çalıştırın. 
 
     pip install --ignore-installed --upgrade tensorflow==2.3.0
     
