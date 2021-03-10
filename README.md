@@ -117,7 +117,7 @@ Bu dizine geldiğinizde, TensorFlow modelleri reposunu klonlamanız gerekecek.
 
 ![alt text](https://i.ibb.co/bgWzCKY/7.jpg)
 
-    https://github.com/tensorflow/models
+    git clone https://github.com/tensorflow/models.git
     
 ![alt text](https://i.ibb.co/Jpxfm83/8.jpg)
  
