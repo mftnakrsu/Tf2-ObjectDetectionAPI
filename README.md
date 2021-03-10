@@ -391,13 +391,36 @@ Artık pretrained modelimizi indirip çıkardığımıza göre, train için bir 
 - Satır 172 <code>label_map_path: "annotations/label_map.pbtxt"</code> Path to label map file
 - Satır 186 <code>input_path: "annotations/test.record" </code> Path to testing TFRecord
 - Satır 174 <code>input_path: "annotations/train.record" </code> Path to training TFRecord file
-- Satır 182 <code>label_map_path: "annotations/label_map.pbtxt" <code> Path to label map file.
+- Satır 182 <code>label_map_path: "annotations/label_map.pbtxt" </code> Path to label map file.
  
 Gerekli tüm değişiklikleri yaptıktan sonra, bu, eğitime hazır olduğumuz anlamına gelir. Öyleyse bir sonraki adıma geçelim
 
 Modelimizi eğitmeye başlamadan önce, <code>TensorFlow / models / research / object_detection / model_main_tf2.py</code> kodu kopyalayıp doğrudan training_demo klasörümüze yapıştıralım. Modelimizi eğitmek için buna ihtiyacımız olacak.
 
-Şimdi, yeni bir eğitim işi başlatmak için yeni bir Terminal açın, training_demo klasörünün içinde cd yapın ve aşağıdaki komutu çalıştırın:
+Şimdi, yeni bir eğitim işi başlatmak için yeni bir Terminal açın, <code>training_demo</code> klasörünün içinde cd yapın ve aşağıdaki komutu çalıştırın:
 
     python model_main_tf2.py --model_dir=models\my_ssd_resnet50_v1_fpn --pipeline_config_path=models\my_ssd_resnet50_v1_fpn\pipeline.config
 
+![alt_text](https://i.ibb.co/x8BxyFL/16.jpg)
+
+FAN SESLERİNİ duymaya başladıysanız ve yukarıdaki gibi bir çıktı aldıysanız TEBRİKLER! Modelinizi eğitmeye başladınız!
+
+Sisteminize bağlı olarak birkaç saat süreceği için artık arkanıza yaslanıp rahatlayabilirsiniz. Benim teknik özelliklerimle eğitim yaklaşık 6 saat sürdü. TensorFlow, işlemin her 100 adımında bir yukarıdakine benzer bir çıktı oluşturur, bu nedenle donmuş görünüyorsa endişelenmeyin. Bu çıktı size iki istatistik gösterir: adım başına süre ve loss. Loss a dikkat etmeniz gerekir. İdeal olarak programı 0.150 ile 0.200 arasında durdurabilirsiniz. Bu underfitting and overfittingi azaltabilir. Benim 0.150 li değerlere inmem 6 saat sürdü.
+
+## TensorBoard kullanımı
+Anaconda promptda çalıştırılacak komutlar
+
+    conda activate tensorflow
+    cd C:\TensorFlow\workspace\training_demo
+    tensorboard --logdir=models\my_ssd_resnet50_v1_fpn
+
+Bunun gibi bir şey çıktısı olmalı:
+
+    Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
+    TensorBoard 2.2.2 at http://localhost:6006/ (Press CTRL+C to quit)
+    
+![alt_text](https://i.ibb.co/3f13FTh/17.jpg)
+
+Verdiği URL'yi kopyalayın, yapıştırın, eğitimi sürekli olarak izleyebileceğiniz TensorBoard ekranını izleyebilirsiniz.
+
+![alt_text](https://i.ibb.co/s56nKpL/18.jpg)
