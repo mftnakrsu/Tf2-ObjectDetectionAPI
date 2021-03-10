@@ -25,7 +25,7 @@ Aşağıdaki komutu yazın:
     conda create -n tensorflow pip python=3.8
 Yukarıdakiler, tensorflow adlı yeni bir sanal ortam oluşturacaktır.
 
-## Sanal ortami aktifleştirme
+## Sanal ortamı aktifleştirme
 
 Yeni oluşturulan sanal ortamın etkinleştirilmesi cmd ekranında aşağıdakilerin çalıştırılmasıyla sağlanır:
 
