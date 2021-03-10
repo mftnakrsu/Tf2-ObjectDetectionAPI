@@ -114,6 +114,7 @@ TensorFlow Object Detection API'si için, modelimizi eğitmek için izlememiz ge
     activate tensorflow
     cd C:\TensorFlow
 Bu dizine geldiğinizde, TensorFlow modelleri reposunu klonlamanız gerekecek.
+
 ![alt text](https://i.ibb.co/bgWzCKY/7.jpg)
 
     https://github.com/tensorflow/models
