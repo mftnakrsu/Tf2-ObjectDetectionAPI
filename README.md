@@ -264,7 +264,7 @@ Bir modeli kendi özel veri kümenizde eğitmek istiyorsanız, önce görüntül
 
 Verileri topladıktan sonra, veri kümesini ayırmalısınız. Bununla, verileri bir train seti ve test/valide setine ayırmanız gerekir.. Resimlerinizin % 80'ini images \ training klasörüne ve kalan % 20'sini images \ test klasörüne koymalısınız. Resimlerinizi ayırdıktan sonra, onları [LabelImg](https://github.com/tzutalin/labelImg) ile etiketleyebilirsiniz.
 
-LablelImg'ı indirdikten sonra, Açık Dir ve Kaydet Dir gibi ayarları yapılandırın. Bu, tüm görüntülerde dolaşmanıza ve nesnelerin etrafında sınırlayıcı kutular ve etiketler oluşturmanıza olanak tanır. Resminizi etiketledikten sonra kaydettiğinizden ve sonraki resme geçtiğinizden emin olun. Bunu images \ test and images \ train klasörlerindeki tüm görüntüler için yapın.
+LablelImg'ı indirdikten sonra, Open Dir ve Save Dir gibi ayarları yapın. Bu, tüm görüntülerde dolaşmanıza ve nesnelerin etrafında bounding box ve etiketler oluşturmanıza yarar. Resminizi etiketledikten sonra kaydettiğinizden ve sonraki resme geçtiğinizden emin olun. Bunu images \ test and images \ train klasörlerindeki tüm görüntüler için yapın.
 
 ![alt text](https://i.ibb.co/LxGVDtS/11.jpg)
 ![alt text](https://i.ibb.co/zbvSQW6/12.jpg)
