@@ -198,3 +198,110 @@ Bu, Anaconda Dizin Yapısını ve Object Detection API'sini başarıyla kurduğu
 To do:
 - [x] Object Detection API kurulmu
 - [ ] Training Custom Object Detector
+
+## Training Custom Object Detector
+
+Burada kendi nesne dedektörünüzü nasıl eğitebileceğinizi göreceğiz.
+
+1. Çalışma alanınızı / eğitim dosyalarınızı nasıl düzenleyebilirsiniz?  
+2. Görüntü veri kümeleri nasıl hazırlanır / labellanır ?  
+3. Bu tür veri kümelerinden tf record dosyaları nasıl oluşturulur?  
+4. Basit bir pipeline nasıl konfigür edilir ?   
+5. Bir model nasıl eğitilir ve ilerlemesi nasıl izlenir?  
+6. Elde edilen model nasıl export edilir ve nesneleri algılamak için kullanılır?  
+
+### Workspace hazırlama
+
+1. Şu anda <PATH_TO_TF> altına yerleştirilmiş bir Tensorflow klasörünüz olmalıdır (örn. C: /TensorFlow), aşağıdaki path ağacı gibi: 
+
+        TensorFlow/
+        ├─ addons/ (Optional)
+        │  └─ labelImg/
+        └─ models/
+           ├─ community/
+           ├─ official/
+           ├─ orbit/
+           ├─ research/
+           └─ ...
+       
+2. Şimdi TensorFlow altında yeni bir klasör oluşturun ve bunu 'workspace' olarak adlandırın. İstediğiniz ismi verebilirsini ama takibi kolay olsun diye aynı yaparsanız daha iyi olur. 'workspace' tüm train kurulumlarımızın olduğu dosya olacak. Şimdi çalışma alanının altına geçelim ve training_demo adlı başka bir klasör oluşturalım. Şimdi dizin yapımız şu şekilde olmalıdır:
+
+        TensorFlow/
+        ├─ addons/ (Optional)
+        │  └─ labelImg/
+        ├─ models/
+        │  ├─ community/
+        │  ├─ official/
+        │  ├─ orbit/
+        │  ├─ research/
+        │  └─ ...
+        └─ workspace/
+           └─ training_demo/
+           
+3. Training_demo klasörü, model eğitimimizle ilgili tüm dosyaları içeren eğitim klasörümüz olacaktır. Farklı bir veri kümesi üzerinde eğitim almak istediğimiz her seferde ayrı bir eğitim klasörü oluşturmanız tavsiye edilir. Eğitim klasörlerinin tipik yapısı aşağıda gösterilmiştir.
+
+        training_demo/
+        ├─ annotations/
+        ├─ exported-models/
+        ├─ images/
+        │  ├─ test/
+        │  └─ train/
+        ├─ models/
+        ├─ pre-trained-models/
+        └─ README.md
+        
+Yukarıdaki ağaçta gösterilen klasörlerin / dosyaların her biri için bir açıklama:
+![alt text](https://i.ibb.co/pfjwDzf/10.jpg)
+
+
+### Dataset hazırlama
+
+Bir modeli kendi özel veri kümenizde eğitmek istiyorsanız, önce görüntüleri toplamalısınız. İdeal olarak her class için 100 resim kullanabilirsiniz. Örneğin, bir kedi ve köpek  detektörü eğitiyorsunuz. 100 kedi resmi ve 100 köpek resmi toplamanız gerekir. Kendi veri kümeniz için, farklı arka planlara ve açılara sahip çeşitli fotoğraflar çekmenizi tavsiye ederim.
+
+![alt text](https://www.ilgitrafik.com/wp-content/uploads/2019/12/azami-h%C4%B1z-s%C4%B1n%C4%B1rlamas%C4%B1-30-km-levhas%C4%B1-tt-29-trafik-tanzim-i%C5%9Faretleri-levhalar%C4%B1-nedir-trafik-tanzim-levhalar%C4%B1-anlamlar%C4%B1-tanzim-levhas%C4%B1-fiyat%C4%B1-imalat%C4%B1-%C3%BCretimi-ankara-tanzim-i%C5%9Faret-levhas%C4%B1.jpg)
+
+![alt text](https://foto.sondakika.com/haber/2014/11/21/gorme-engellilerin-yoluna-dikilen-dur-tabelasi-6708058_2498_m.jpg)
+
+Verileri topladıktan sonra, veri kümesini ayırmalısınız. Bununla, verileri bir train seti ve test/valide setine ayırmanız gerekir.. Resimlerinizin % 80'ini images \ training klasörüne ve kalan % 20'sini images \ test klasörüne koymalısınız. Resimlerinizi ayırdıktan sonra, onları [LabelImg](https://github.com/tzutalin/labelImg) ile etiketleyebilirsiniz.
+
+LablelImg'ı indirdikten sonra, Açık Dir ve Kaydet Dir gibi ayarları yapılandırın. Bu, tüm görüntülerde dolaşmanıza ve nesnelerin etrafında sınırlayıcı kutular ve etiketler oluşturmanıza olanak tanır. Resminizi etiketledikten sonra kaydettiğinizden ve sonraki resme geçtiğinizden emin olun. Bunu images \ test and images \ train klasörlerindeki tüm görüntüler için yapın.
+
+![alt text](https://i.ibb.co/LxGVDtS/11.jpg)
+![alt text](https://i.ibb.co/zbvSQW6/12.jpg)
+
+#### Open Dir  ve Save Dir'i de hallettikten sonra resimlerinizi labellamaya başlayabilirsiniz. Bence en eğlenceli kısmı burası.(!)
+
+![alt text](https://i.ibb.co/4mkb4Tf/13.jpg)
+
+## Label Map oluşturulması
+
+TensorFlow, kullanılan etiketlerin her birini bir tam sayı değeriyle eşler. Bu label map hem eğitim hem de tespit süreçleri tarafından kullanılır.
+
+Aşağıda, veri setimizin 2 etiket, 'dur' ve 'hiz30' içerdiğini varsayarak örnek bir etiket haritası (ör. Label_map.pbtxt) gösteriyoruz:
+
+    item {
+        id: 1
+        name: 'dur'
+    }
+
+    item {
+        id: 2
+        name: 'hiz30'
+    }
+    
+Örneğin, bir kedi, köpek ve iguana dedektörü yapmak istiyorsanız, etiket haritanız şunun gibi görünecektir:
+    
+    item {
+        id: 1
+        name: 'kedi'
+    }
+
+    item {
+        id: 2
+        name: 'köpek'
+    }
+    
+     item {
+        id: 3
+        name: 'iguana'
+    }
