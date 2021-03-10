@@ -305,3 +305,99 @@ Aşağıda, veri setimizin 2 etiket, 'dur' ve 'hiz30' içerdiğini varsayarak ö
         id: 3
         name: 'iguana'
     }
+Bunu yaptıktan sonra label_map.pbtxt olarak kaydedin.    
+Label map .pbtxt uzantısına sahiptir ve training_demo / annotations klasörünün içine yerleştirilmelidir.
+
+## Create TensorFlow Records
+
+[Script](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/training.html) dosyalarını bu repodan indirebilirsiniz. Sizin için düzenledim kolay olması için. Orijinal scriptlere [buradan](https://tensorflow-object-detection-api-tutorial.readthedocs.io/en/latest/training.html) ulaşabilirsiniz.
+
+Script dosyalarını da indirin. En son dizin ağacınız bu şekilde olmalıdır.
+
+    TensorFlow/
+    ├─ addons/ (Optional)
+    │  └─ labelImg/
+    ├─ models/
+    │  ├─ community/
+    │  ├─ official/
+    │  ├─ orbit/
+    │  ├─ research/
+    │  └─ ...
+    ├─ scripts/
+    │  └─ preprocessing/
+    └─ workspace/
+       └─ training_demo/
+
+Label .xml dosyalarını tensorflow .record'a dönüştürün.
+Bunu yapmak için, training_demo / images / train ve training_demo / images / test klasörlerindeki tüm .xml dosyalarının her biri için bir .record dosyası oluşturan basit bir script vardır. Bunu yapacak komut dosyası C: \ TensorFlow \ scripts \ preprocessing konumunda bulunur . Önce pandas kütüphanesini indirmeliyiz:
+    
+    conda install pandas # Anaconda
+                         # or
+    pip install pandas   # pip
+ 
+Şimdi scripts \ preprocessing dizinine gitmeliyiz.  
+Doğru dizine girdikten sonra, RECORD  oluşturmak için bu iki komutu çalıştırın.
+
+    # Create train data:
+    python generate_tfrecord.py -x [PATH_TO_IMAGES_FOLDER]/train -l [PATH_TO_ANNOTATIONS_FOLDER]/label_map.pbtxt -o [PATH_TO_ANNOTATIONS_FOLDER]/train.record
+
+    # Create test data:
+    python generate_tfrecord.py -x [PATH_TO_IMAGES_FOLDER]/test -l [PATH_TO_ANNOTATIONS_FOLDER]/label_map.pbtxt -o [PATH_TO_ANNOTATIONS_FOLDER]/test.record
+    
+Benim pathlerim bu şekilde olduğu için alttaki iki kodu çalıştırıyorum. 
+    
+    python generate_tfrecord.py -x C:\Tensorflow\workspace\training_demo\images\train -l C:\Tensorflow\workspace\training_demo\annotations\label_map.pbtxt -o   C:\Tensorflow\workspace\training_demo\annotations\train.record
+
+    python generate_tfrecord.py -x C:\Tensorflow\workspace\training_demo\images\test -l C:\Tensorflow\workspace\training_demo\annotations\label_map.pbtxt -o C:\Tensorflow\workspace\training_demo\annotations\test.record
+
+Yukarıdakiler yapıldıktan sonra, training_demo / annotations klasörünün altında sırasıyla test.record ve train.record adlı 2 yeni dosya olmalıdır.
+
+![alt_text](https://i.ibb.co/MgJ1Zkb/15.jpg)
+
+## Training
+
+Pretrained TensorFlow modellerinin bir CONFIG dosyasını kullanacağız. [TensorFlow Model Zoo](https://github.com/tensorflow/models/blob/master/research/object_detection/g3doc/tf2_detection_zoo.md)'dan istediğiniz modele ulaşabilirsiniz ancak ben *SSD ResNet50 V1 FPN 640x640*'ı kullanacağım. İsterseniz farklı bir model seçebilirsiniz, değişen tek şey indireceğiniz model olacaktır.
+
+İstediğiniz modeli indirmek için TensorFlow Model Zoo'ya gidin. Bir tar.gz dosyası indirir. İndirildikten sonra, dosyanın içeriğini <code>pre-trained-models</code>  dizinine çıkarır. Bu dizinin yapısı böyle olmalıdır:
+
+    training_demo/
+    ├─ ...
+    ├─ pre-trained-models/
+    │  └─ ssd_resnet50_v1_fpn_640x640_coco17_tpu-8/
+    │     ├─ checkpoint/
+    │     ├─ saved_model/
+    │     └─ pipeline.config
+    └─ ...
+    
+    
+Artık pretrained modelimizi indirip çıkardığımıza göre, train için bir dizin oluşturalım. Training_demo / models altında my_ssd_resnet50_v1_fpn adlı yeni bir dizin oluşturun ve training_demo /pre-trained-models / ssd_resnet50_v1_fpn_640x640_coco17_tpu-8 / pipeline.config dosyasını yeni oluşturulan dizine kopyalayın. Training_demo / models dizinimiz artık şu şekilde görünmelidir:
+    
+    training_demo/
+    ├─ ...
+    ├─ models/
+    │  └─ my_ssd_resnet50_v1_fpn/
+    │     └─ pipeline.config
+    └─ ...
+![alt_text](https://i.ibb.co/WHZ1S3P/15.jpg)
+
+
+Şimdi <code>pipeline.config</code> dosyasında uygulamamız gereken değişikliklere bir göz atalım.
+
+- Satır 3 <code>num_classes</code>'ı class sayınız kadar değiştirin. Benim classlarım 'dur' ve 'hiz30' o yüzden <code>num_classes: 2</code>
+- Satır 131 <code>batch_size</code>'ı memoryinize göre değiştirin. Benim memorye göre 
+    * <code>batch_size: 4</code>
+- Satır 161 <code>fine_tune_checkpoint</code> pretrained modelin checkpoint path
+    * <code>fine_tune_checkpoint: "pre-trained-models/ssd_resnet50_v1_fpn_640x640_coco17_tpu-8/checkpoint/ckpt-0"</code>
+- Satır 172 <code>label_map_path: "annotations/label_map.pbtxt"</code> Path to label map file
+- Satır 186 <code>input_path: "annotations/test.record" </code> Path to testing TFRecord
+- Satır 174 <code>input_path: "annotations/train.record" </code> Path to training TFRecord file
+- Satır 182 <code>label_map_path: "annotations/label_map.pbtxt" <code> Path to label map file.
+ 
+Gerekli tüm değişiklikleri yaptıktan sonra, bu, eğitime hazır olduğumuz anlamına gelir. Öyleyse bir sonraki adıma geçelim
+
+Modelimizi eğitmeye başlamadan önce, <code>TensorFlow / models / research / object_detection / model_main_tf2.py</code> kodu kopyalayıp doğrudan training_demo klasörümüze yapıştıralım. Modelimizi eğitmek için buna ihtiyacımız olacak.
+
+Şimdi, yeni bir eğitim işi başlatmak için yeni bir Terminal açın, training_demo klasörünün içinde cd yapın ve aşağıdaki komutu çalıştırın:
+
+    python model_main_tf2.py --model_dir=models\my_ssd_resnet50_v1_fpn --pipeline_config_path=models\my_ssd_resnet50_v1_fpn\pipeline.config
+
