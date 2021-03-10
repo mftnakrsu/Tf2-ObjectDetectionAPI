@@ -12,7 +12,6 @@ Bu eğitim boyunca kullanacağımız yazılım araçları aşağıdaki tabloda l
 
 ##  Anaconda Python 3.7 yükleyin
 
-
 Sistem gereksinimlerinize göre Python 3.7 64-Bit Graphical Installer veya 32-Bit Graphical Installer yükleyicisini [indirin](https://www.anaconda.com/products/individual).
 
 (İsteğe bağlı) Sonraki adımda, "Add Anaconda3 to my PATH environment variable” Bu, Anaconda'yı varsayılan Python dağıtımınız yapar ve tüm düzenleyiciler arasında aynı varsayılan Python dağıtımına sahip olmanızı sağlar.
@@ -104,3 +103,97 @@ Gpu desteğini doğrulamak için kodu çalıştırın:
 - [ ] Object Detection API kurulmu
 
 # TensorFlow Object Detection API Kurulumu 
+Artık TensorFlow'u kurduğunuza göre, TensorFlow Object Detection API'sini kurmanın zamanı geldi.
+
+## TensorFlow Model Garden yükleme
+
+TensorFlow Object Detection API'si için, modelimizi eğitmek için izlememiz gereken belirli bir dizin düzeni vardır.
+
+İlk olarak, doğrudan C: içinde bir klasör oluşturun ve "TensorFlow" olarak adlandırın. Klasörü nereye yerleştireceğiniz size kalmış, ancak takibi kolay olması açısından ben C diskinin içinde oluşturdum. Bu klasörü oluşturduktan sonra Anaconda Promt'a geri dönün.
+        
+    activate tensorflow
+    cd C:\TensorFlow
+Bu dizine geldiğinizde, TensorFlow modelleri reposunu klonlamanız gerekecek.
+![alt text](https://i.ibb.co/bgWzCKY/7.jpg)
+
+    https://github.com/tensorflow/models
+    
+![alt text](https://i.ibb.co/Jpxfm83/8.jpg)
+ 
+En son, dizin yapınız şuna benzer görünmelidir.
+ 
+    TensorFlow/
+    └─ models/
+       ├─ community/
+       ├─ official/
+       ├─ orbit/
+       ├─ research/
+       └── ...
+      
+Dizin yapısını kurduktan sonra, Object Detection API için ön koşulları yüklemeliyiz. İlk önce protobuf derleyicisini Anaconda Promt'da indiriyoruz.
+  
+    (tensorflow) C:\TensorFlow>
+    conda install -c anaconda protobuf
+    
+Daha sonra TensorFlow \ models \ research dizinine gidin ve protobuf derleyecisini çalıştırın.
+   
+    cd models\research
+    protoc object_detection\protos\*.proto --python_out=.
+
+NOT: Ortam değişkenlerindeki değişikliklerin etkili olması için yeni bir Terminal açmanız GEREKİR.
+
+## COCO API kurulumu
+
+TensorFlow 2.x itibariyle, pycotools paketi Object Detection API'sinin bir [destek dosyaları](https://github.com/tensorflow/models/blob/master/research/object_detection/packages/tf2/setup.py) olarak listelenmiştir. İdeal olarak, bu paket, daha sonra da kurulabilir ama bazı hatalar alınabilir olduğu için şimdi kuracağız.
+
+Bunu yaptıktan sonra, terminali kapatın ve yeni bir Anaconda Prompt açın açın. *activate tensorflow* ile sanal ortamınızı aktifleştirin.
+
+    pip install cython
+    pip install git+https://github.com/philferriere/cocoapi.git#subdirectory=PythonAPI
+    
+Burda hata alabilirsiniz:
+
+Kurulum talimatlarına göre Visual C ++ 2015 derleme araçlarının yüklü ve sizin pathinizde olması gerektiğini unutmayın. Bu pakete sahip değilseniz, [buradan](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&amp;rel=16) indirin.
+
+Bunu da kurduktan sonra
+
+    cd C:\TensorFlow\models\research
+dizinine gidin ve
+    
+    copy object_detection\packages\tf2\setup.py .
+    python -m pip install .
+object detection api kurulumun tamamlayın.
+Herhangi bir hata alırsanız, bildirin lütfen ancak bunlar büyük olasılıkla yüklemenizin yanlış olduğu anlamına gelen pycotools sorunlarıdır. Ancak her şey plana göre giderse kurulumunuzu test edebilirsiniz.
+
+Kurulumu test etmek için *Tensorflow \ models \ research* içinden aşağıdaki komutu çalıştırın:
+
+    python object_detection/builders/model_builder_tf2_test.py
+Yukarıdakiler çalıştırıldığında, testin tamamlanması için biraz zaman tanıyın ve bittiğinde kurulumlarda hata yoksa aşağıdakine benzer bir çıktı almalısınız:    
+
+    ...
+    [       OK ] ModelBuilderTF2Test.test_create_ssd_models_from_config
+    [ RUN      ] ModelBuilderTF2Test.test_invalid_faster_rcnn_batchnorm_update
+    [       OK ] ModelBuilderTF2Test.test_invalid_faster_rcnn_batchnorm_update
+    [ RUN      ] ModelBuilderTF2Test.test_invalid_first_stage_nms_iou_threshold
+    [       OK ] ModelBuilderTF2Test.test_invalid_first_stage_nms_iou_threshold
+    [ RUN      ] ModelBuilderTF2Test.test_invalid_model_config_proto
+    [       OK ] ModelBuilderTF2Test.test_invalid_model_config_proto
+    [ RUN      ] ModelBuilderTF2Test.test_invalid_second_stage_batch_size
+    [       OK ] ModelBuilderTF2Test.test_invalid_second_stage_batch_size
+    [ RUN      ] ModelBuilderTF2Test.test_session
+    [  SKIPPED ] ModelBuilderTF2Test.test_session
+    [ RUN      ] ModelBuilderTF2Test.test_unknown_faster_rcnn_feature_extractor
+    [       OK ] ModelBuilderTF2Test.test_unknown_faster_rcnn_feature_extractor
+    [ RUN      ] ModelBuilderTF2Test.test_unknown_meta_architecture
+    [       OK ] ModelBuilderTF2Test.test_unknown_meta_architecture
+    [ RUN      ] ModelBuilderTF2Test.test_unknown_ssd_feature_extractor
+    [       OK ] ModelBuilderTF2Test.test_unknown_ssd_feature_extractor
+    ----------------------------------------------------------------------
+    Ran 20 tests in 73.510s
+
+    OK (skipped=1)
+Bu, Anaconda Dizin Yapısını ve Object Detection API'sini başarıyla kurduğumuz anlamına gelir. Artık veri setimizi toplayıp kendi custom modelimizi oluşturabiliriz. Öyleyse bir sonraki adıma geçelim!
+
+To do:
+- [x] Object Detection API kurulmu
+- [ ] Training Custom Object Detector
