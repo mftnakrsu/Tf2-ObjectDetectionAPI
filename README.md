@@ -424,3 +424,42 @@ Bunun gibi bir şey çıktısı olmalı:
 Verdiği URL'yi kopyalayın, yapıştırın, eğitimi sürekli olarak izleyebileceğiniz TensorBoard ekranını izleyebilirsiniz.
 
 ![alt_text](https://i.ibb.co/s56nKpL/18.jpg)
+
+## Trained Model Export edilmesi
+
+Eğitim işiniz tamamlandığına göre, object detectionı yapmak için kullanılacak olan modeli export etmeniz gerekir. Bu şöyle yapılabilir:
+
+- <code>TensorFlow / models / research / object_detection / exporter_main_v2.py</code> komut dosyasını kopyalayın ve doğrudan training_demo klasörünüze yapıştırın.
+- Şimdi, training_demo klasörünüzün içinde bir Terminal, cd açın ve aşağıdaki komutu çalıştırın:
+
+        python .\exporter_main_v2.py --input_type image_tensor --pipeline_config_path .\models\my_ssd_resnet50_v1_fpn\pipeline.config --trained_checkpoint_dir .\models\my_ssd_resnet50_v1_fpn\ --output_directory .\exported-models\my_model
+
+Yukarıdaki işlem tamamlandıktan sonra, aşağıdaki yapıya sahip olan training_demo / exported-models dizini olmalıdır:
+
+    training_demo/
+    ├─ ...
+    ├─ exported-models/
+    │  └─ my_model/
+    │     ├─ checkpoint/
+    │     ├─ saved_model/
+    │     └─ pipeline.config
+    └─ ...
+    
+![alt_text](https://i.ibb.co/0QSM1LM/19.jpg)
+
+## Model Testi
+
+    usage: TF-image-od.py [-h] [--model MODEL] [--labels LABELS] [--image IMAGE] [--threshold THRESHOLD]
+
+    optional arguments:
+      -h, --help            show this help message and exit
+      --model MODEL         Folder that the Saved Model is Located In
+      --labels LABELS       Where the Labelmap is Located
+      --image IMAGE         Name of the single image to perform detection on
+      
+![alt_text](https://i.ibb.co/bPQXZ2M/20.jpg)     
+
+Pathleri ayarlayıp modelinizi test edebilirsiniz. Hepinize KOLAY GELSİN.
+
+![alt_text](https://i.ibb.co/crVSM3Q/Whats-App-Image-2021-03-11-at-21-18-34.jpg)
+![alt_text](https://i.ibb.co/44gpkw7/Whats-App-Image-2021-03-11-at-21-19-19.jpg)
