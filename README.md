@@ -449,7 +449,7 @@ Yukarıdaki işlem tamamlandıktan sonra, aşağıdaki yapıya sahip olan traini
 
 ## Model Testi
 
-    usage: TF-image-od.py [-h] [--model MODEL] [--labels LABELS] [--image IMAGE] [--threshold THRESHOLD]
+    usage: tf_image.py [-h] [--model MODEL] [--labels LABELS] [--image IMAGE] [--threshold THRESHOLD]
 
     optional arguments:
       -h, --help            show this help message and exit
