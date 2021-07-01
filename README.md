@@ -512,5 +512,7 @@ Yukarıdaki işlem tamamlandıktan sonra, aşağıdaki yapıya sahip olan traini
 
 Pathleri ayarlayıp modelinizi test edebilirsiniz. Hepinize KOLAY GELSİN.
 
+## Sonuçlar
+
 ![alt_text](https://i.ibb.co/crVSM3Q/Whats-App-Image-2021-03-11-at-21-18-34.jpg)
 ![alt_text](https://i.ibb.co/44gpkw7/Whats-App-Image-2021-03-11-at-21-19-19.jpg)
