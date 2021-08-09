@@ -8,7 +8,7 @@ Takip ettiğim rehbere [buradan](https://tensorflow-object-detection-api-tutoria
 
 Bu eğitim boyunca kullanacağımız yazılım araçları aşağıdaki tabloda listelenmiştir:
 
-![alt text](https://i.ibb.co/TmqDLk4/1.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/1.jpeg)
 ## İçindekiler
 <!-- TOC -->
 
@@ -101,11 +101,11 @@ Varsayılan olarak, TensorFlow çalıştırıldığında uyumlu GPU cihazların�
 
     Could not load dynamic library 'cudart64_101.dll'; dlerror: cudart64_101.dll not found
 
-![alt text](https://raw.githubusercontent.com/armaanpriyadarshan/Training-a-Custom-TensorFlow-2.X-Object-Detector/master/doc/cuda.png)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/2.png)
 
 TensorFlow'un GPU'nuzda çalışması için aşağıdaki gereksinimlerin karşılanması gerekir:
 
-![alt text](https://i.ibb.co/VBhgM8K/2.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/3.jpeg)
 
 #### Cuda kurulumu
 
@@ -113,7 +113,7 @@ CUDA Toolkit 10.1'i [buradan](https://developer.nvidia.com/cuda-10.1-download-ar
 
 İndirdikten sonra Ortam değişkenleri /Sistem değişkenleri /Path den pathlerinizi düzenlemeniz gerekebilir:
 
-![alt text](https://i.ibb.co/Kbf45VB/3.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/4.jpeg)
 
 #### CUDNN kurulumu
 
@@ -127,10 +127,10 @@ Windows 10 için cuDNN v7.6.5 dosyasını indirin
 
 zip dosyasını(cuda) klasörünü \ NVIDIA GPU Computing Toolkit \ CUDA \ v10.1 \ dizinine çıkarın.
 
-![alt text](https://i.ibb.co/xzDDrsk/4.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/5.jpeg)
 
 Ortam değişkenlerine PATH ini ekleyin.
-![alt text](https://i.ibb.co/pP336Pc/5.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/6.jpeg)
 
 ### GPU desteğini doğrulama
 
@@ -139,7 +139,7 @@ Gpu desteğini doğrulamak için kodu çalıştırın:
     python -c "import tensorflow as tf;print(tf.reduce_sum(tf.random.normal([1000, 1000])))"
 
 Çıktınız şu şekilde olmalıdır:
-![alt text](https://i.ibb.co/0ys9TPC/6.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/7.jpeg)
 
 - [x] Anaconda kurulumu
 - [x] Tensorflow kurulumu
@@ -161,11 +161,11 @@ TensorFlow Object Detection API'si için, modelimizi eğitmek için izlememiz ge
 
 Bu dizine geldiğinizde, TensorFlow modelleri reposunu klonlamanız gerekecek.
 
-![alt text](https://i.ibb.co/bgWzCKY/7.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/8.jpeg)
 
     git clone https://github.com/tensorflow/models.git
 
-![alt text](https://i.ibb.co/Jpxfm83/8.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/9.jpeg)
 
 En son, dizin yapınız şuna benzer görünmelidir.
 
@@ -302,26 +302,26 @@ Burada kendi nesne dedektörünüzü nasıl eğitebileceğinizi göreceğiz.
         └─ README.md
 
 Yukarıdaki ağaçta gösterilen klasörlerin / dosyaların her biri için bir açıklama:
-![alt text](https://i.ibb.co/pfjwDzf/10.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/10.jpeg)
 
 ### Dataset hazırlama
 
 Bir modeli kendi özel veri kümenizde eğitmek istiyorsanız, önce görüntüleri toplamalısınız. İdeal olarak her class için 100 resim kullanabilirsiniz. Örneğin, bir kedi ve köpek detektörü eğitiyorsunuz. 100 kedi resmi ve 100 köpek resmi toplamanız gerekir. Kendi veri kümeniz için, farklı arka planlara ve açılara sahip çeşitli fotoğraflar çekmenizi tavsiye ederim.
 
-![alt text](https://www.ilgitrafik.com/wp-content/uploads/2019/12/azami-h%C4%B1z-s%C4%B1n%C4%B1rlamas%C4%B1-30-km-levhas%C4%B1-tt-29-trafik-tanzim-i%C5%9Faretleri-levhalar%C4%B1-nedir-trafik-tanzim-levhalar%C4%B1-anlamlar%C4%B1-tanzim-levhas%C4%B1-fiyat%C4%B1-imalat%C4%B1-%C3%BCretimi-ankara-tanzim-i%C5%9Faret-levhas%C4%B1.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/11.jpeg)
 
-![alt text](https://foto.sondakika.com/haber/2014/11/21/gorme-engellilerin-yoluna-dikilen-dur-tabelasi-6708058_2498_m.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/12.jpeg)
 
 Verileri topladıktan sonra, veri kümesini ayırmalısınız. Bununla, verileri bir train seti ve test/valide setine ayırmanız gerekir.. Resimlerinizin % 80'ini images \ training klasörüne ve kalan % 20'sini images \ test klasörüne koymalısınız. Resimlerinizi ayırdıktan sonra, onları [LabelImg](https://github.com/tzutalin/labelImg) ile etiketleyebilirsiniz.
 
 LablelImg'ı indirdikten sonra, Open Dir ve Save Dir gibi ayarları yapın. Bu, tüm görüntülerde dolaşmanıza ve nesnelerin etrafında bounding box ve etiketler oluşturmanıza yarar. Resminizi etiketledikten sonra kaydettiğinizden ve sonraki resme geçtiğinizden emin olun. Bunu images \ test and images \ train klasörlerindeki tüm görüntüler için yapın.
 
-![alt text](https://i.ibb.co/LxGVDtS/11.jpg)
-![alt text](https://i.ibb.co/zbvSQW6/12.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/13.jpeg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/14.jpeg)
 
 #### Open Dir ve Save Dir'i de hallettikten sonra resimlerinizi labellamaya başlayabilirsiniz. Bence en eğlenceli kısmı burası.(!)
 
-![alt text](https://i.ibb.co/4mkb4Tf/13.jpg)
+![alt text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/15.jpeg)
 
 ## Label Map oluşturulması
 
@@ -403,7 +403,7 @@ Benim pathlerim bu şekilde olduğu için alttaki iki kodu çalıştırıyorum.
 
 Yukarıdakiler yapıldıktan sonra, training_demo / annotations klasörünün altında sırasıyla test.record ve train.record adlı 2 yeni dosya olmalıdır.
 
-![alt_text](https://i.ibb.co/MgJ1Zkb/15.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/16.jpeg)
 
 ## Training
 
@@ -429,7 +429,7 @@ Artık pretrained modelimizi indirip çıkardığımıza göre, train için bir 
     │     └─ pipeline.config
     └─ ...
 
-![alt_text](https://i.ibb.co/WHZ1S3P/15.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/17.jpeg)
 
 Şimdi <code>pipeline.config</code> dosyasında uygulamamız gereken değişikliklere bir göz atalım.
 
@@ -451,7 +451,7 @@ Modelimizi eğitmeye başlamadan önce, <code>TensorFlow / models / research / o
 
     python model_main_tf2.py --model_dir=models\my_ssd_resnet50_v1_fpn --pipeline_config_path=models\my_ssd_resnet50_v1_fpn\pipeline.config
 
-![alt_text](https://i.ibb.co/x8BxyFL/16.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/18.jpeg)
 
 FAN SESLERİNİ duymaya başladıysanız ve yukarıdaki gibi bir çıktı aldıysanız TEBRİKLER! Modelinizi eğitmeye başladınız!
 
@@ -470,11 +470,11 @@ Bunun gibi bir şey çıktısı olmalı:
     Serving TensorBoard on localhost; to expose to the network, use a proxy or pass --bind_all
     TensorBoard 2.2.2 at http://localhost:6006/ (Press CTRL+C to quit)
 
-![alt_text](https://i.ibb.co/3f13FTh/17.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/19.jpeg)
 
 Verdiği URL'yi kopyalayın, yapıştırın, eğitimi sürekli olarak izleyebileceğiniz TensorBoard ekranını izleyebilirsiniz.
 
-![alt_text](https://i.ibb.co/s56nKpL/18.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/20.jpeg)
 
 ## Trained Model Export edilmesi
 
@@ -496,7 +496,7 @@ Yukarıdaki işlem tamamlandıktan sonra, aşağıdaki yapıya sahip olan traini
     │     └─ pipeline.config
     └─ ...
 
-![alt_text](https://i.ibb.co/0QSM1LM/19.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/21.jpeg)
 
 ## Model Testi
 
@@ -508,11 +508,11 @@ Yukarıdaki işlem tamamlandıktan sonra, aşağıdaki yapıya sahip olan traini
       --labels LABELS       Where the Labelmap is Located
       --image IMAGE         Name of the single image to perform detection on
 
-![alt_text](https://i.ibb.co/bPQXZ2M/20.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/22.jpeg)
 
 Pathleri ayarlayıp modelinizi test edebilirsiniz. Hepinize KOLAY GELSİN.
 
 ## Sonuçlar
 
-![alt_text](https://i.ibb.co/crVSM3Q/Whats-App-Image-2021-03-11-at-21-18-34.jpg)
-![alt_text](https://i.ibb.co/44gpkw7/Whats-App-Image-2021-03-11-at-21-19-19.jpg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/23.jpeg)
+![alt_text](hhttps://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/24.jpeg)
