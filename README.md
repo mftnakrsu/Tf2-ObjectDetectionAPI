@@ -515,4 +515,4 @@ Pathleri ayarlayıp modelinizi test edebilirsiniz. Hepinize KOLAY GELSİN.
 ## Sonuçlar
 
 ![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/23.jpeg)
-![alt_text](hhttps://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/24.jpeg)
+![alt_text](https://github.com/mftnakrsu/Tf2-ObjectDetectionAPI/blob/main/images/24.jpeg)
